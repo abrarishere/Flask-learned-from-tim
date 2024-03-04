@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{% block title %}Home{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+  <header>
+    <nav class="container">
+      <div class="logo">
+        myTodo
+      </div>
+      <ul>
+        {% if user.is_authenticated %}
+        <a href="/">
+          <li>Home</li>
+        </a>
+        <a href="/logout">
+          <li>LogOut</li>
+        </a>
+        {% else %}
+        <a href="/login">
+          <li>Login</li>
+        </a>
+        <a href="/sign-up">
+          <li>Sign Up</li>
+        </a>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+  
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  {% if category == 'error' %}
+  <div class="alert alert-danger">
+    <span class="message">{{ message }}</span>
+    <button class="close btn-d" type="button">&times;</button>
+  </div>
+  {% elif category == 'success' %}
+  <div class="alert alert-success">
+    <span class="message">{{ message }}</span>
+    <button class="close btn-d" type="button">&times;</button>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+  
+  <div class="container">{% block content %}{% endblock %}</div>
+  <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+</body>
+
+</html>
